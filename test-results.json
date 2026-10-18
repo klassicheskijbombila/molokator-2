@@ -1,0 +1,1 @@
+{"checks":["all 7 types reachable","equal frequency for uniform enumeration","deterministic latest-answer tie break","all-same-answer paths"],"combinations":823543,"counts":{"0":117649,"1":117649,"2":117649,"3":117649,"4":117649,"5":117649,"6":117649},"browser_testing":"not performed"}
