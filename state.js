@@ -1,0 +1,8 @@
+(()=>{'use strict';
+const modes=['classic','lactosefree'];
+const answer=x=>Number.isInteger(x)&&x>=0&&x<7;
+function valid(r){return !!(r&&typeof r==='object'&&modes.includes(r.mode)&&answer(r.type)&&Number.isInteger(r.score)&&r.score>=0&&r.score<=100&&typeof r.number==='string'&&/^\d{6}$/.test(r.number));}
+function calculate(mode,answers,number=String(Date.now()).slice(-6)){if(!modes.includes(mode)||!Array.isArray(answers)||answers.length!==7||!answers.every(answer))throw new Error('Invalid answers');const counts=Array(7).fill(0);answers.forEach(i=>counts[i]++);const max=Math.max(...counts);const type=[...answers].reverse().find(i=>counts[i]===max);return {mode,type,score:Math.round(max/7*100),number};}
+function restore(s){const empty={mode:null,answers:[],index:0,result:null,friend:null};if(!s||typeof s!=='object')return empty;const friend=valid(s.friend)?{...s.friend}:null;if(!modes.includes(s.mode)||!Array.isArray(s.answers)||s.answers.length>7||!s.answers.every(answer)||!Number.isInteger(s.index)||s.index<0||s.index>6||s.index>s.answers.length)return {...empty,friend};let result=null;if(s.result!=null){if(!valid(s.result)||s.answers.length!==7||s.result.mode!==s.mode)return {...empty,friend};const expected=calculate(s.mode,s.answers,s.result.number);if(expected.type!==s.result.type||expected.score!==s.result.score)return {...empty,friend};result={...s.result};}return {mode:s.mode,answers:[...s.answers],index:s.index,result,friend};}
+const api={valid,calculate,restore};if(typeof module!=='undefined'&&module.exports)module.exports=api;else window.MOLOKATOR_STATE=api;
+})();
